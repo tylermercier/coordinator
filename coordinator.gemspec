@@ -8,8 +8,8 @@ Gem::Specification.new do |spec|
   spec.version       = Coordinator::VERSION
   spec.authors       = ["Tyler Mercier"]
   spec.email         = ["tylermercier@gmail.com"]
-  spec.summary       = %q{TODO}
-  spec.description   = %q{TODO}
+  spec.summary       = %q{Ruby gem for coordinating multiple redis queues}
+  spec.description   = %q{Ruby gem for coordinating multiple redis queues}
   spec.homepage      = ""
   spec.license       = "MIT"
 
