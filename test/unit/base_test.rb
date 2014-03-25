@@ -3,21 +3,21 @@ require 'test_helper'
 describe 'Coordinator::Base' do
   before do
     @coordinator = Coordinator::Base.new([
-      Coordinator::Queue.new("pos"),
-      Coordinator::Queue.new("rogers"),
-      Coordinator::Queue.new("general")
+      Coordinator::Queue.new("high"),
+      Coordinator::Queue.new("medium"),
+      Coordinator::Queue.new("low")
     ])
   end
 
   describe 'adding work' do
     it 'adds task to appropriate queue with priority' do
-      @coordinator.add_task("pos", 1)
-      @coordinator.add_task("rogers", 2)
-      @coordinator.add_priority_task("pos", 3)
-      assert_equal 3, @coordinator.next_task(["pos"])
-      assert_equal 1, @coordinator.next_task(["pos"])
-      assert_equal 2, @coordinator.next_task(["rogers"])
-      assert_equal false, @coordinator.next_task(["rogers"])
+      @coordinator.add_task("high", 1)
+      @coordinator.add_task("medium", 2)
+      @coordinator.add_priority_task("high", 3)
+      assert_equal 3, @coordinator.next_task(["high"])
+      assert_equal 1, @coordinator.next_task(["high"])
+      assert_equal 2, @coordinator.next_task(["medium"])
+      assert_equal false, @coordinator.next_task(["medium"])
     end
   end
 end
