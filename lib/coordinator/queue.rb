@@ -1,10 +1,11 @@
 module Coordinator
   class Queue
-    attr_reader :skill
+    attr_reader :skill, :rules
 
-    def initialize(skill)
+    def initialize(skill, &block)
       @skill = skill
       @store = Coordinator::RedisQueue.new(@skill)
+      @custom_block = block if block_given?
     end
 
     def add_task(task)
@@ -16,11 +17,12 @@ module Coordinator
     end
 
     def next_task(skills)
-      can_work?(skills) ? @store.pop : nil
+      eligible?(@store.peek, skills) ? @store.pop : nil
     end
 
-    def can_work?(skills)
-      skills.include?(@skill)
+    def eligible?(task, skills)
+      return true if skills.include?(@skill)
+      @custom_block ? @custom_block.call(task, skills) : false
     end
   end
 end
