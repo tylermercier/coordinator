@@ -19,5 +19,12 @@ describe 'Coordinator::Base' do
       assert_equal 2, @coordinator.next_task(["medium"])
       assert_equal false, @coordinator.next_task(["medium"])
     end
+
+    it 'raises exception when no queue exists' do
+      err = -> {
+        @coordinator.add_task("forgotten", 1)
+      }.must_raise Coordinator::Error
+      err.message.must_match /No matching queue for forgotten/
+    end
   end
 end

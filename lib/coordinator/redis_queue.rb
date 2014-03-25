@@ -4,7 +4,7 @@ module Coordinator
   class RedisQueue
     def initialize(name)
       @name = name
-      raise "redis not found, please set 'Redis.current'" unless Redis.current
+      raise Coordinator::Error.new("'Redis.current' not set") unless Redis.current
       @redis = Redis.current
     end
 
