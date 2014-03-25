@@ -18,6 +18,15 @@ describe 'Coordinator::RedisQueue' do
       @queue.push("a")
       assert_equal 1, @queue.length
     end
+
+    it 'adds the same item only once' do
+      @queue.capacity = 1
+      @queue.push("a")
+      err = -> {
+        @queue.push("b")
+      }.must_raise Coordinator::Error
+      err.message.must_match /Queue is at capacity/
+    end
   end
 
   describe '.left_push' do
@@ -67,6 +76,14 @@ describe 'Coordinator::RedisQueue' do
       @queue.push(2)
       assert_equal 1, @queue.peek
       assert_equal 2, @queue.length
+    end
+  end
+
+  describe '.capacity' do
+    it 'gets the top item and does not remove' do
+      assert_equal nil, @queue.capacity
+      @queue.capacity = 2
+      assert_equal 2, @queue.capacity
     end
   end
 

@@ -3,44 +3,60 @@ require 'json'
 module Coordinator
   class RedisQueue
     def initialize(name)
-      @name = name
+      @queue_name = "#{name}-queue"
+      @capacity_name = "#{name}-capacity"
       raise Coordinator::Error.new("'Redis.current' not set") unless Redis.current
       @redis = Redis.current
     end
 
     def push(item)
+      raise Coordinator::Error.new("Queue is at capacity") if full?
       data = serialize(item)
-      @redis.rpush(@name, data) unless items.include?(data)
+      @redis.rpush(@queue_name, data) unless items.include?(data)
     end
 
     def left_push(item)
       data = serialize(item)
-      @redis.lpush(@name, data) unless items.include?(data)
+      @redis.lpush(@queue_name, data) unless items.include?(data)
     end
 
     def pop
-      data = @redis.lpop(@name)
+      data = @redis.lpop(@queue_name)
       parse(data)
     end
 
     def remove(item)
       data = serialize(item)
-      @redis.lrem(@name, 1, data)
+      @redis.lrem(@queue_name, 1, data)
     end
 
     def peek
-      data = @redis.lrange(@name, 0, 0).first
+      data = @redis.lrange(@queue_name, 0, 0).first
       parse(data)
     end
 
     def length
-      @redis.llen(@name)
+      @redis.llen(@queue_name)
+    end
+
+    def capacity
+      data = @redis.get(@capacity_name)
+      parse(data)
+    end
+
+    def capacity=(capacity)
+      @redis.set(@capacity_name, capacity)
     end
 
     private
 
+    def full?
+      return false unless capacity
+      length >= capacity
+    end
+
     def items
-      @redis.lrange(@name, 0, length)
+      @redis.lrange(@queue_name, 0, length)
     end
 
     def serialize(item)

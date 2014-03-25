@@ -22,6 +22,11 @@ module Coordinator
       false
     end
 
+    def set_capacity(skill, capacity)
+      queue = queue_for_skill(skill)
+      queue.set_capacity(capacity)
+    end
+
     private
 
     def queue_for_skill(skill)

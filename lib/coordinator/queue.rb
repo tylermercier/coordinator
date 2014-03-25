@@ -2,9 +2,10 @@ module Coordinator
   class Queue
     attr_reader :skill, :rules
 
-    def initialize(skill, &block)
+    def initialize(skill, capacity=nil, &block)
       @skill = skill
       @store = Coordinator::RedisQueue.new(@skill)
+      @store.capacity = capacity if capacity
       @custom_block = block if block_given?
     end
 
@@ -23,6 +24,10 @@ module Coordinator
     def eligible?(task, skills)
       return true if skills.include?(@skill)
       @custom_block ? @custom_block.call(task, skills) : false
+    end
+
+    def set_capacity(capacity)
+      @store.capacity = capacity
     end
   end
 end
