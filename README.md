@@ -28,6 +28,7 @@ Or install it yourself as:
       Coordinator::Queue.new("medium"),
       Coordinator::Queue.new("low")
     ])
+    
 
 ## Contributing
 
