@@ -5,12 +5,12 @@ module Coordinator
     def initialize(name)
       @queue_name = "#{name}-queue"
       @capacity_name = "#{name}-capacity"
-      raise Coordinator::Error.new("'Redis.current' not set") unless Redis.current
+      raise Coordinator::Error, "'Redis.current' not set" unless Redis.current
       @redis = Redis.current
     end
 
     def push(item)
-      raise Coordinator::Error.new("Queue is at capacity") if full?
+      raise Coordinator::Error, "Queue is at capacity" if full?
       data = serialize(item)
       @redis.rpush(@queue_name, data) unless items.include?(data)
     end
@@ -51,8 +51,7 @@ module Coordinator
     private
 
     def full?
-      return false unless capacity
-      length >= capacity
+      capacity && capacity <= length
     end
 
     def items

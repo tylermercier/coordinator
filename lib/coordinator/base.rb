@@ -31,7 +31,7 @@ module Coordinator
 
     def queue_for_skill(skill)
       queue = @queues.find {|q| q.skill == skill}
-      raise Coordinator::Error.new("No matching queue for #{skill}") unless queue
+      raise Coordinator::Error, "No matching queue for #{skill}" unless queue
       queue
     end
   end
