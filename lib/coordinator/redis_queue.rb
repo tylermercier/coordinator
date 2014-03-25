@@ -4,32 +4,33 @@ module Coordinator
   class RedisQueue
     def initialize(name)
       @name = name
-      raise "redis not find, please set 'Redis.current'" unless Redis.current
+      raise "redis not found, please set 'Redis.current'" unless Redis.current
       @redis = Redis.current
     end
 
     def push(item)
-      @redis.rpush(@name, serialize(item))
+      data = serialize(item)
+      @redis.rpush(@name, data) unless items.include?(data)
     end
 
     def left_push(item)
-      @redis.lpush(@name, serialize(item))
+      data = serialize(item)
+      @redis.lpush(@name, data) unless items.include?(data)
     end
 
     def pop
-      parse(@redis.lpop(@name))
+      data = @redis.lpop(@name)
+      parse(data)
     end
 
     def remove(item)
-      @redis.lrem(@name, 1, serialize(item))
+      data = serialize(item)
+      @redis.lrem(@name, 1, data)
     end
 
     def peek
-      @redis.lrange(@name, 0, 0).first
-    end
-
-    def items
-      @redis.lrange(@name, 0, length)
+      data = @redis.lrange(@name, 0, 0).first
+      parse(data)
     end
 
     def length
@@ -38,8 +39,12 @@ module Coordinator
 
     private
 
+    def items
+      @redis.lrange(@name, 0, length)
+    end
+
     def serialize(item)
-      (item.is_a? String) ? item : item.to_json
+      item.is_a?(String) ? item : item.to_json
     end
 
     def parse(item)

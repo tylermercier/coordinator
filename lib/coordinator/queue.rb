@@ -20,7 +20,7 @@ module Coordinator
     end
 
     def can_work?(skills)
-      skills.include? @skill
+      skills.include?(@skill)
     end
   end
 end

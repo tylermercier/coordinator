@@ -10,7 +10,13 @@ describe 'Coordinator::RedisQueue' do
     it 'adds element to queue, returns length' do
       @queue.push("a")
       @queue.push("b")
-      assert_equal 3, @queue.push("c")
+      assert_equal 2, @queue.length
+    end
+
+    it 'adds the same item only once' do
+      @queue.push("a")
+      @queue.push("a")
+      assert_equal 1, @queue.length
     end
   end
 
@@ -59,7 +65,7 @@ describe 'Coordinator::RedisQueue' do
     it 'gets the top item and does not remove' do
       @queue.push(1)
       @queue.push(2)
-      assert_equal "1", @queue.peek
+      assert_equal 1, @queue.peek
       assert_equal 2, @queue.length
     end
   end
