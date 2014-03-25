@@ -29,6 +29,12 @@ Or install it yourself as:
       Coordinator::Queue.new("low")
     ])
     
+    @coordinator.add_task("high", 1)
+    @coordinator.add_task("medium", 2)
+    @coordinator.add_priority_task("high", 3)
+    
+    @coordinator.next_task(["high"]) # returns 3
+    @coordinator.next_task(["medium"]) # returns 2
 
 ## Contributing
 
