@@ -27,4 +27,13 @@ describe 'Coordinator::Base' do
       err.message.must_match /No matching queue for forgotten/
     end
   end
+
+  describe 'removing work' do
+    it 'remove task from appropriate queue' do
+      @coordinator.add_task("medium", 2)
+      @coordinator.add_priority_task("medium", 3)
+      @coordinator.remove_task("medium", 3)
+      assert_equal 2, @coordinator.next_task(["medium"])
+    end
+  end
 end

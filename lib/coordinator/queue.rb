@@ -17,6 +17,10 @@ module Coordinator
       @store.left_push(task)
     end
 
+    def remove_task(task)
+      @store.remove(task)
+    end
+
     def next_task(skills)
       eligible?(@store.peek, skills) ? @store.pop : nil
     end
