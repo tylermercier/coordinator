@@ -1,4 +1,5 @@
 require 'test_helper'
+require 'time'
 
 describe 'ParallelismTest' do
   before do
@@ -11,24 +12,34 @@ describe 'ParallelismTest' do
   end
 
   it 'works syncronously' do
-    1.upto(200) { perform_work }
+    125.times { perform_work }
     assert_equal [], @coordinator.view("tasks")
-    assert_equal @tasks, @coordinator.view("completed_tasks")
+    array_equal(@tasks, @coordinator.view("completed_tasks"))
   end
 
   it 'works in parallel' do
     workers = []
-    1.upto(200) do
-      workers << Thread.new { perform_work }
+
+    start = Time.now + 1
+
+    200.times do |i|
+      workers << Thread.new(i) do
+        sleep(start - Time.now)
+        perform_work(i)
+      end
     end
     workers.each { |w| w.join }
 
     assert_equal [], @coordinator.view("tasks")
-    assert_equal @tasks, @coordinator.view("completed_tasks")
+    array_equal(@tasks, @coordinator.view("completed_tasks"))
   end
 
-  def perform_work
+  def perform_work(i=nil)
     task = @coordinator.next_task(["tasks"])
     @coordinator.add_task("completed_tasks", task) if task
+  end
+
+  def array_equal(left, right)
+     assert_equal left.uniq.sort, right.uniq.sort
   end
 end

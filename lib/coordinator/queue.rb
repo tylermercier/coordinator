@@ -18,13 +18,13 @@ module Coordinator
     end
 
     def remove_task(task)
-      @store.remove(task)
+       @store.remove(task)
     end
 
     def next_task(skills)
       task = @store.peek
       return nil unless task && eligible?(task, skills)
-      return task if remove_task(task)
+      return task if @store.remove(task)
       next_task(skills)
     end
 

@@ -27,7 +27,7 @@ module Coordinator
 
     def remove(item)
       data = serialize(item)
-      @redis.lrem(@queue_name, 1, data)
+      @redis.lrem(@queue_name, 1, data) == 1
     end
 
     def peek
