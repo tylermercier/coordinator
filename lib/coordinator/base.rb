@@ -5,13 +5,15 @@ module Coordinator
     end
 
     def add_task(skill, task)
-      queue = queue_for_skill(skill)
-      queue.add_task(task)
+      queue_for_skill(skill).add_task(task)
     end
 
     def add_priority_task(skill, task)
-      queue = queue_for_skill(skill)
-      queue.add_priority_task(task)
+      queue_for_skill(skill).add_priority_task(task)
+    end
+
+    def remove_task(skill, task)
+      queue_for_skill(skill).remove_task(task)
     end
 
     def next_task(skills)
@@ -23,8 +25,7 @@ module Coordinator
     end
 
     def set_capacity(skill, capacity)
-      queue = queue_for_skill(skill)
-      queue.set_capacity(capacity)
+      queue_for_skill(skill).set_capacity(capacity)
     end
 
     private
