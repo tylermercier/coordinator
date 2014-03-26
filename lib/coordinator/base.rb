@@ -28,6 +28,10 @@ module Coordinator
       queue_for_skill(skill).set_capacity(capacity)
     end
 
+    def view(skill)
+      queue_for_skill(skill).items
+    end
+
     private
 
     def queue_for_skill(skill)
