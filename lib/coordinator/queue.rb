@@ -24,7 +24,7 @@ module Coordinator
     def next_task(skills)
       task = @store.peek
       return nil unless task && eligible?(task, skills)
-      return task if remove_task(task)
+      return task if @store.remove(task)
       next_task(skills)
     end
 
@@ -39,6 +39,14 @@ module Coordinator
 
     def items
       @store.items
+    end
+
+    def capacity
+      @store.capacity
+    end
+
+    def length
+      @store.length
     end
   end
 end

@@ -28,6 +28,16 @@ module Coordinator
       queue_for_skill(skill).set_capacity(capacity)
     end
 
+    def info(skill)
+      queue = queue_for_skill(skill)
+      {
+        :skill => queue.skill,
+        :capacity => queue.capacity,
+        :count => queue.length,
+        :items => queue.items
+      }
+    end
+
     private
 
     def queue_for_skill(skill)

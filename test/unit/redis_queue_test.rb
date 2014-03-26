@@ -53,20 +53,20 @@ describe 'Coordinator::RedisQueue' do
   end
 
   describe '.remove' do
-    it 'returns 1 when element found and removes' do
+    it 'returns true when element found and removes' do
       @queue.push(1)
-      assert_equal 1, @queue.remove(1)
+      assert_equal true, @queue.remove(1)
       assert_equal 0, @queue.length
     end
 
-    it 'returns 0 when element not found' do
+    it 'returns false when element not found' do
       @queue.push(1)
-      assert_equal 0, @queue.remove(4)
+      assert_equal false, @queue.remove(4)
       assert_equal 1, @queue.length
     end
 
-    it 'returns nil when queue empty' do
-      assert_equal nil, @queue.remove(4)
+    it 'returns false when queue empty' do
+      assert_equal false, @queue.remove(4)
     end
   end
 
