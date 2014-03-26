@@ -48,14 +48,14 @@ module Coordinator
       @redis.set(@capacity_name, capacity)
     end
 
+    def items
+      @redis.lrange(@queue_name, 0, length)
+    end
+
     private
 
     def full?
       capacity && capacity <= length
-    end
-
-    def items
-      @redis.lrange(@queue_name, 0, length)
     end
 
     def serialize(item)

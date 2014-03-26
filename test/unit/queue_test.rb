@@ -6,6 +6,22 @@ describe "Coordinator::Queue" do
     Redis.current.flushall
   end
 
+  describe "next_task" do
+    it "gets task for skills" do
+      @queue.add_task(5)
+      assert_equal 5, @queue.next_task(["high"])
+    end
+
+    it "returns nil when no eligable work" do
+      @queue.add_task(5)
+      assert_equal nil, @queue.next_task(["medium"])
+    end
+
+    it "returns nil when no work" do
+      assert_equal nil, @queue.next_task(["medium"])
+    end
+  end
+
   describe "add_task" do
     it "returns true when skill present" do
       @queue.add_task(5)

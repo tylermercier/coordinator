@@ -77,6 +77,10 @@ describe 'Coordinator::RedisQueue' do
       assert_equal 1, @queue.peek
       assert_equal 2, @queue.length
     end
+
+    it 'return nil if no items' do
+      assert_equal nil, @queue.peek
+    end
   end
 
   describe '.capacity' do
