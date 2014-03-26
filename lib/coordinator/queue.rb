@@ -18,7 +18,7 @@ module Coordinator
     end
 
     def remove_task(task)
-       @store.remove(task)
+      @store.remove(task)
     end
 
     def next_task(skills)
@@ -39,6 +39,14 @@ module Coordinator
 
     def items
       @store.items
+    end
+
+    def capacity
+      @store.capacity
+    end
+
+    def length
+      @store.length
     end
   end
 end
