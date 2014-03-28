@@ -29,8 +29,11 @@ module Coordinator
     end
 
     def eligible?(task, skills)
-      return true if skills.include?(@skill)
-      @custom_block ? @custom_block.call(task, skills) : false
+      if @custom_block
+        @custom_block.call(task, skills)
+      else
+        skills.include?(@skill)
+      end
     end
 
     def set_capacity(capacity)

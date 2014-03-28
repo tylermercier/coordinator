@@ -56,7 +56,7 @@ describe "Coordinator::Queue" do
         task == 3 && skills.include?("special")
       end
       refute queue.eligible?(2, ["special"])
-      assert queue.eligible?(nil, ["normal"]), "default behaviour"
+      refute queue.eligible?(nil, ["normal"]), "default behaviour"
       assert queue.eligible?(2, ["low"]), "override through skill"
       assert queue.eligible?(4, []), "override through task"
       assert queue.eligible?(3, ["special"]), "override through both"
