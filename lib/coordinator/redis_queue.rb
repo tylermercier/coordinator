@@ -22,7 +22,7 @@ module Coordinator
 
     def pop
       data = @redis.lpop(@queue_name)
-      parse(data)
+      deserialize(data)
     end
 
     def remove(item)
@@ -32,7 +32,7 @@ module Coordinator
 
     def peek
       data = @redis.lrange(@queue_name, 0, 0).first
-      parse(data)
+      deserialize(data)
     end
 
     def length
@@ -41,7 +41,7 @@ module Coordinator
 
     def capacity
       data = @redis.get(@capacity_name)
-      parse(data)
+      deserialize(data)
     end
 
     def capacity=(capacity)
@@ -49,7 +49,7 @@ module Coordinator
     end
 
     def items
-      @redis.lrange(@queue_name, 0, length)
+      @redis.lrange(@queue_name, 0, length).map { |i| deserialize(i) }
     end
 
     private
@@ -62,7 +62,7 @@ module Coordinator
       item.is_a?(String) ? item : item.to_json
     end
 
-    def parse(item)
+    def deserialize(item)
       return item if item.nil?
       return item.to_i if item.to_i.to_s == item
       begin

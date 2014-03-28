@@ -31,10 +31,10 @@ module Coordinator
     def info(skill)
       queue = queue_for_skill(skill)
       {
-        :name => queue.name,
-        :capacity => queue.capacity,
-        :count => queue.length,
-        :items => queue.items
+        "name" => queue.name,
+        "capacity" => queue.capacity,
+        "count" => queue.length,
+        "items" => queue.items
       }
     end
 

@@ -13,8 +13,8 @@ describe 'ParallelismTest' do
 
   it 'works syncronously' do
     125.times { perform_work }
-    assert_equal [], @coordinator.info("tasks")[:items]
-    array_equal(@tasks, @coordinator.info("completed_tasks")[:items])
+    assert_equal [], @coordinator.info("tasks")["items"]
+    array_equal(@tasks, @coordinator.info("completed_tasks")["items"])
   end
 
   it 'works in parallel' do
@@ -30,8 +30,8 @@ describe 'ParallelismTest' do
     end
     workers.each { |w| w.join }
 
-    assert_equal [], @coordinator.info("tasks")[:items]
-    array_equal(@tasks, @coordinator.info("completed_tasks")[:items])
+    assert_equal [], @coordinator.info("tasks")["items"]
+    array_equal(@tasks, @coordinator.info("completed_tasks")["items"])
   end
 
   def perform_work(i=nil)
