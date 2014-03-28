@@ -1,7 +1,5 @@
 module Coordinator
   class Queue
-    attr_reader :skill, :rules
-
     def initialize(skill, capacity=nil, &block)
       @skill = skill
       @store = Coordinator::RedisQueue.new(@skill)
@@ -38,6 +36,10 @@ module Coordinator
 
     def set_capacity(capacity)
       @store.capacity = capacity
+    end
+
+    def name
+      @skill
     end
 
     def items
