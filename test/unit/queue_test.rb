@@ -51,12 +51,13 @@ describe "Coordinator::Queue" do
 
     it "can override default behaviour" do
       queue = Coordinator::Queue.new("normal") do |task, skills|
+        return true if skills.include?(name) && skills.include?("online")
         return true if skills.include?("low")
         return true if task == 4
         task == 3 && skills.include?("special")
       end
-      refute queue.eligible?(2, ["special"])
       refute queue.eligible?(nil, ["normal"]), "default behaviour"
+      assert queue.eligible?(2, ["normal", "online"]), "access queue variables"
       assert queue.eligible?(2, ["low"]), "override through skill"
       assert queue.eligible?(4, []), "override through task"
       assert queue.eligible?(3, ["special"]), "override through both"
