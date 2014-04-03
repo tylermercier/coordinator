@@ -22,10 +22,7 @@ describe 'Coordinator::RedisQueue' do
     it 'adds the same item only once' do
       @queue.capacity = 1
       @queue.push("a")
-      err = -> {
-        @queue.push("b")
-      }.must_raise Coordinator::Error
-      err.message.must_match /Queue is at capacity/
+      assert_equal false, @queue.push("b")
     end
   end
 

@@ -10,7 +10,7 @@ module Coordinator
     end
 
     def push(item)
-      raise Coordinator::Error, "Queue is at capacity" if full?
+      return false if full?
       data = serialize(item)
       @redis.rpush(@queue_name, data) unless items.include?(data)
     end
