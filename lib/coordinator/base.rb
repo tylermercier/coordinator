@@ -38,11 +38,11 @@ module Coordinator
       }
     end
 
-    def length
+    def length_all
       @queues.inject(0) { |sum, queue| sum + queue.length }
     end
 
-    def peek
+    def peek_all
       @queues.map(&:peek).compact
     end
 
