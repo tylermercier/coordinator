@@ -42,6 +42,8 @@ module Coordinator
       @skill
     end
 
+    # store delegation methods
+
     def items
       @store.items
     end
@@ -52,6 +54,10 @@ module Coordinator
 
     def length
       @store.length
+    end
+
+    def peek
+      @store.peek
     end
   end
 end
