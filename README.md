@@ -33,8 +33,8 @@ Or install it yourself as:
     @coordinator.add_task("medium", 2)
     @coordinator.add_priority_task("high", 3)
     
-    @coordinator.length # returns 3
-    @coordinator.peek # returns [3, 2]
+    @coordinator.length_all # returns 3
+    @coordinator.peek_all # returns [3, 2]
 
     @coordinator.next_task(["high"]) # returns 3
     @coordinator.next_task(["medium"]) # returns 2
