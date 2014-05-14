@@ -63,4 +63,14 @@ describe "Coordinator::Queue" do
       assert queue.eligible?(3, ["special"]), "override through both"
     end
   end
+
+  describe "peek" do
+    it "deserialize the top task but leaves it in the queue" do
+      task = {"id" => 123}
+      @queue.add_task(task)
+
+      assert_equal task, @queue.peek
+      assert_equal task, @queue.peek # ensure task is still enqueued
+    end
+  end
 end

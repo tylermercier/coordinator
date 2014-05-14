@@ -7,6 +7,7 @@ describe 'Coordinator::Base' do
       Coordinator::Queue.new("medium"),
       Coordinator::Queue.new("low")
     ])
+    Redis.current.flushall
   end
 
   describe 'adding work' do
@@ -34,6 +35,35 @@ describe 'Coordinator::Base' do
       @coordinator.add_priority_task("medium", 3)
       @coordinator.remove_task("medium", 3)
       assert_equal 2, @coordinator.next_task(["medium"])
+    end
+  end
+
+  describe 'length_all' do
+    it 'returns the total amount of tasks across all queues' do
+      @coordinator.add_task("medium", 1)
+      @coordinator.add_priority_task("medium", 2)
+      @coordinator.add_task("low", 3)
+      @coordinator.add_task("high", 4)
+      assert_equal 4, @coordinator.length_all
+    end
+
+    it 'returns 0 for no tasks enqueued' do
+      assert_equal 0, @coordinator.length_all
+    end
+  end
+
+  describe 'peek_all' do
+    it 'returns the top item from each queue' do
+      @coordinator.add_task("medium", 1)
+      @coordinator.add_priority_task("medium", 2)
+      @coordinator.add_task("low", 3)
+      @coordinator.add_task("high", 4)
+
+      assert_equal [2,3,4].sort, @coordinator.peek_all.sort
+    end
+
+    it 'returns empty array if all queues are empty' do
+      assert_equal [], @coordinator.peek_all
     end
   end
 end

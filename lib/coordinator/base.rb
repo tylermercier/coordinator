@@ -38,6 +38,14 @@ module Coordinator
       }
     end
 
+    def length_all
+      @queues.inject(0) { |sum, queue| sum + queue.length }
+    end
+
+    def peek_all
+      @queues.map(&:peek).compact
+    end
+
     private
 
     def queue_for_skill(skill)
