@@ -3,10 +3,10 @@ require 'time'
 
 describe 'ParallelismTest' do
   before do
-    @coordinator = Coordinator::Base.new([
+    @coordinator = Coordinator::Base.new(Coordinator::ArrayFinder.new([
       Coordinator::Queue.new("tasks"),
       Coordinator::Queue.new("completed_tasks")
-    ])
+    ]))
     @tasks = ('a'..'z').to_a
     @tasks.each { |t| @coordinator.add_task("tasks", t) }
   end
