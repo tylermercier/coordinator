@@ -11,7 +11,7 @@ module Coordinator
       queue
     end
 
-    def all
+    def all_queues
       @queues
     end
   end

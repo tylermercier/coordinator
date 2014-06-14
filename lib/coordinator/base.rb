@@ -17,7 +17,7 @@ module Coordinator
     end
 
     def next_task(skills)
-      @queues.all.each do |q|
+      @queues.all_queues.each do |q|
         task = q.next_task(skills)
         return task if task
       end
@@ -39,11 +39,11 @@ module Coordinator
     end
 
     def length_all
-      @queues.all.inject(0) { |sum, queue| sum + queue.length }
+      @queues.all_queues.inject(0) { |sum, queue| sum + queue.length }
     end
 
     def peek_all
-      @queues.all.map(&:peek).compact
+      @queues.all_queues.map(&:peek).compact
     end
 
   end
