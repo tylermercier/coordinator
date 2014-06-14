@@ -2,11 +2,11 @@ require 'test_helper'
 
 describe 'Coordinator::Base' do
   before do
-    @coordinator = Coordinator::Base.new([
+    @coordinator = Coordinator::Base.new(Coordinator::ArrayFinder.new([
       Coordinator::Queue.new("high"),
       Coordinator::Queue.new("medium"),
       Coordinator::Queue.new("low")
-    ])
+    ]))
     Redis.current.flushall
   end
 
