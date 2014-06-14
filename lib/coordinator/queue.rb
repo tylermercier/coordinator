@@ -28,7 +28,7 @@ module Coordinator
 
     def eligible?(task, skills)
       if @custom_block
-        self.instance_exec(task, skills, &@custom_block)
+        @custom_block.call(self, task, skills)
       else
         skills.include?(@skill)
       end
