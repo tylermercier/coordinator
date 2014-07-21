@@ -8,12 +8,12 @@ describe "Coordinator::Queue" do
 
   describe "next_task" do
     it "gets task for skills" do
-      @queue.add_task(5)
+      @queue.push(5)
       assert_equal 5, @queue.next_task(["high"])
     end
 
     it "returns nil when no eligable work" do
-      @queue.add_task(5)
+      @queue.push(5)
       assert_equal nil, @queue.next_task(["medium"])
     end
 
@@ -22,19 +22,19 @@ describe "Coordinator::Queue" do
     end
   end
 
-  describe "add_task" do
+  describe "push" do
     it "returns true when skill present" do
-      @queue.add_task(5)
-      @queue.add_task(4)
+      @queue.push(5)
+      @queue.push(4)
 
       assert_equal 5, @queue.next_task(["high"])
     end
   end
 
-  describe "add_priority_task" do
+  describe "left_push" do
     it "returns true when skill present" do
-      @queue.add_task(5)
-      @queue.add_priority_task(4)
+      @queue.push(5)
+      @queue.left_push(4)
 
       assert_equal 4, @queue.next_task(["high"])
     end
@@ -67,7 +67,7 @@ describe "Coordinator::Queue" do
   describe "peek" do
     it "deserialize the top task but leaves it in the queue" do
       task = {"id" => 123}
-      @queue.add_task(task)
+      @queue.push(task)
 
       assert_equal task, @queue.peek
       assert_equal task, @queue.peek # ensure task is still enqueued
