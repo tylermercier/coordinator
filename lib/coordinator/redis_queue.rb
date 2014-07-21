@@ -52,11 +52,11 @@ module Coordinator
       @redis.lrange(@queue_name, 0, length).map { |i| deserialize(i) }
     end
 
-    private
-
     def full?
       capacity && capacity <= length
     end
+
+    private
 
     def serialize(item)
       item.is_a?(String) ? item : item.to_json

@@ -29,13 +29,7 @@ module Coordinator
     end
 
     def info(skill)
-      queue = queue_for_skill(skill)
-      {
-        "name" => queue.name,
-        "capacity" => queue.capacity,
-        "count" => queue.length,
-        "items" => queue.items
-      }
+      queue_for_skill(skill).details
     end
 
     def length_all
@@ -49,7 +43,7 @@ module Coordinator
     private
 
     def queue_for_skill(skill)
-      queue = @queues.find {|q| q.name == skill}
+      queue = @queues.find {|q| q.skill == skill}
       raise Coordinator::Error, "No matching queue for #{skill}" unless queue
       queue
     end

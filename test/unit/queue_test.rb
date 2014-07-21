@@ -51,7 +51,7 @@ describe "Coordinator::Queue" do
 
     it "can override default behaviour" do
       queue = Coordinator::Queue.new("normal") do |task, skills|
-        return true if skills.include?(name) && skills.include?("online")
+        return true if skills.include?(skill) && skills.include?("online")
         return true if skills.include?("low")
         return true if task == 4
         task == 3 && skills.include?("special")

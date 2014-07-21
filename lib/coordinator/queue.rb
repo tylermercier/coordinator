@@ -1,5 +1,7 @@
 module Coordinator
   class Queue
+    attr_reader :skill
+
     def initialize(skill, capacity=nil, &block)
       @skill = skill
       @store = Coordinator::RedisQueue.new(@skill)
@@ -38,18 +40,14 @@ module Coordinator
       @store.capacity = capacity
     end
 
-    def name
-      @skill
-    end
-
-    # store delegation methods
-
-    def items
-      @store.items
-    end
-
-    def capacity
-      @store.capacity
+    def details
+      {
+        "name" => @skill,
+        "full" => @store.full?,
+        "capacity" => @store.capacity,
+        "count" => @store.length,
+        "items" => @store.items
+      }
     end
 
     def length
