@@ -6,37 +6,14 @@ describe "Coordinator::Queue" do
     Redis.current.flushall
   end
 
-  describe "next_task" do
-    it "gets task for skills" do
-      @queue.push(5)
-      assert_equal 5, @queue.next_task(["high"])
+  describe 'next_task' do
+    it 'returns task when eligible' do
+      @queue.push(1)
+      assert 1, @queue.next_task(["high"])
     end
 
-    it "returns nil when no eligable work" do
-      @queue.push(5)
-      assert_equal nil, @queue.next_task(["medium"])
-    end
-
-    it "returns nil when no work" do
-      assert_equal nil, @queue.next_task(["medium"])
-    end
-  end
-
-  describe "push" do
-    it "returns true when skill present" do
-      @queue.push(5)
-      @queue.push(4)
-
-      assert_equal 5, @queue.next_task(["high"])
-    end
-  end
-
-  describe "left_push" do
-    it "returns true when skill present" do
-      @queue.push(5)
-      @queue.left_push(4)
-
-      assert_equal 4, @queue.next_task(["high"])
+    it 'returns nil when not eligible' do
+      assert_equal nil, @queue.next_task(["high"])
     end
   end
 
@@ -61,16 +38,6 @@ describe "Coordinator::Queue" do
       assert queue.eligible?(2, ["low"]), "override through skill"
       assert queue.eligible?(4, []), "override through task"
       assert queue.eligible?(3, ["special"]), "override through both"
-    end
-  end
-
-  describe "peek" do
-    it "deserialize the top task but leaves it in the queue" do
-      task = {"id" => 123}
-      @queue.push(task)
-
-      assert_equal task, @queue.peek
-      assert_equal task, @queue.peek # ensure task is still enqueued
     end
   end
 end

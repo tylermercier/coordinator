@@ -88,6 +88,16 @@ describe 'Coordinator::RedisQueue' do
     end
   end
 
+  describe '.full?' do
+    it 'false when under capacity' do
+      refute @queue.full?
+    end
+    it 'true when at capacity' do
+      @queue.capacity = 0
+      assert @queue.full?
+    end
+  end
+
   it 'allows for objects' do
     [1000, "taco", {"a" => 1}, [1,2,3]].each do |o|
       @queue.push(o)

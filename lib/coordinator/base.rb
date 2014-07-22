@@ -28,6 +28,10 @@ module Coordinator
       queue_for_skill(skill).capacity = capacity
     end
 
+    def full?(skill)
+      queue_for_skill(skill).full?
+    end
+
     def info(skill)
       queue_for_skill(skill).details
     end

@@ -38,6 +38,34 @@ describe 'Coordinator::Base' do
     end
   end
 
+  describe 'capacity' do
+    before do
+      @coordinator.set_capacity("high", 1)
+      @coordinator.add_task("high", 1)
+    end
+
+    it 'recognizes full state' do
+      assert @coordinator.full?("high")
+    end
+
+    it 'recognizes full state' do
+      @coordinator.set_capacity("high", 2)
+      refute @coordinator.full?("high")
+    end
+  end
+
+  describe 'info' do
+    it 'returns queue specific details' do
+      @coordinator.add_task("high", "new task")
+      info = @coordinator.info("high")
+      assert_equal "high", info["name"]
+      assert_equal nil, info["full"]
+      assert_equal nil, info["capacity"]
+      assert_equal 1, info["count"]
+      assert_equal ["new task"], info["items"]
+    end
+  end
+
   describe 'length_all' do
     it 'returns the total amount of tasks across all queues' do
       @coordinator.add_task("medium", 1)
