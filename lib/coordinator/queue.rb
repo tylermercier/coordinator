@@ -1,28 +1,19 @@
 module Coordinator
-  class Queue
+  class Queue < RedisQueue
+    attr_reader :skill
+
     def initialize(skill, capacity=nil, &block)
       @skill = skill
-      @store = Coordinator::RedisQueue.new(@skill)
-      @store.capacity = capacity if capacity
+      self.capacity = capacity if capacity
       @custom_block = block if block_given?
-    end
 
-    def add_task(task)
-      @store.push(task)
-    end
-
-    def add_priority_task(task)
-      @store.left_push(task)
-    end
-
-    def remove_task(task)
-      @store.remove(task)
+      super(skill)
     end
 
     def next_task(skills)
-      task = @store.peek
+      task = peek
       return nil unless task && eligible?(task, skills)
-      return task if @store.remove(task)
+      return task if remove(task)
       next_task(skills)
     end
 
@@ -34,30 +25,14 @@ module Coordinator
       end
     end
 
-    def set_capacity(capacity)
-      @store.capacity = capacity
-    end
-
-    def name
-      @skill
-    end
-
-    # store delegation methods
-
-    def items
-      @store.items
-    end
-
-    def capacity
-      @store.capacity
-    end
-
-    def length
-      @store.length
-    end
-
-    def peek
-      @store.peek
+    def details
+      {
+        "name" => @skill,
+        "full" => full?,
+        "capacity" => capacity,
+        "count" => length,
+        "items" => items
+      }
     end
   end
 end
