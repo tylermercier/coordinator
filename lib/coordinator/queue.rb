@@ -4,10 +4,11 @@ module Coordinator
 
     def initialize(skill, capacity=nil, &block)
       @skill = skill
-      self.capacity = capacity if capacity
       @custom_block = block if block_given?
 
       super(skill)
+
+      self.capacity = capacity if capacity
     end
 
     def next_task(skills)
