@@ -6,6 +6,13 @@ describe "Coordinator::Queue" do
     Redis.current.flushall
   end
 
+  describe 'initialize' do
+    it 'can capacity when option argument is passed in' do
+      @queue = Coordinator::Queue.new("high", 500)
+      assert_equal 500, @queue.capacity
+    end
+  end
+
   describe 'next_task' do
     it 'returns task when eligible' do
       @queue.push(1)
