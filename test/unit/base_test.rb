@@ -80,6 +80,21 @@ describe 'Coordinator::Base' do
     end
   end
 
+  describe 'length' do
+    it 'returns the total amount of tasks for a particular queue' do
+      @coordinator.add_task("medium", 1)
+      @coordinator.add_task("medium", 2)
+      @coordinator.add_task("low", 3)
+
+      assert_equal 2, @coordinator.length("medium")
+      assert_equal 1, @coordinator.length("low")
+    end
+
+    it 'returns 0 for no tasks enqueued' do
+      assert_equal 0, @coordinator.length_all
+    end
+  end
+
   describe 'peek_all' do
     it 'returns the top item from each queue' do
       @coordinator.add_task("medium", 1)

@@ -45,6 +45,10 @@ module Coordinator
       @queues.inject(0) { |sum, queue| sum + queue.length }
     end
 
+    def length(skill)
+      queue_for_skill(skill).length
+    end
+
     def peek_all
       @queues.map(&:peek).compact
     end
