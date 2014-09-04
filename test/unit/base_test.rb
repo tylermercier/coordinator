@@ -94,4 +94,22 @@ describe 'Coordinator::Base' do
       assert_equal [], @coordinator.peek_all
     end
   end
+
+  describe 'position' do
+    it 'returns the position in the queue' do
+      @coordinator.add_task("medium", 1)
+      @coordinator.add_task("medium", 2)
+      @coordinator.add_task("low", 3)
+      @coordinator.add_task("high", 4)
+
+      assert_equal 1, @coordinator.position("medium", 1)
+      assert_equal 2, @coordinator.position("medium", 2)
+      assert_equal 1, @coordinator.position("low", 3)
+      assert_equal 1, @coordinator.position("high", 4)
+    end
+
+    it 'returns -1 if the task is not in the queue' do
+      assert_equal -1, @coordinator.position("medium", 999)
+    end
+  end
 end

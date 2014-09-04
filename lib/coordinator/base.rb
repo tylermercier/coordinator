@@ -36,6 +36,11 @@ module Coordinator
       queue_for_skill(skill).details
     end
 
+    def position(skill, task)
+      index = queue_for_skill(skill).items.index(task)
+      index ? index + 1 : -1
+    end
+
     def length_all
       @queues.inject(0) { |sum, queue| sum + queue.length }
     end
