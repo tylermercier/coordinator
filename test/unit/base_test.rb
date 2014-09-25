@@ -56,6 +56,18 @@ describe 'Coordinator::Base' do
 
   describe 'info' do
     it 'returns queue specific details' do
+      @coordinator.add_task("high", "new task")
+      info = @coordinator.info("high")
+      assert_equal "high", info["name"]
+      assert_equal nil, info["full"]
+      assert_equal nil, info["capacity"]
+      assert_equal 1, info["count"]
+      assert_equal ["new task"], info["items"]
+    end
+  end
+
+  describe 'info_all' do
+    it 'returns a hash with details for each queue' do
       @coordinator.add_task("high", "high task")
       @coordinator.add_task("medium", "medium task 1")
       @coordinator.add_task("medium", "medium task 2")
@@ -65,18 +77,6 @@ describe 'Coordinator::Base' do
       assert_equal @coordinator.info("high"), info["high"]
       assert_equal @coordinator.info("medium"), info["medium"]
       assert_equal @coordinator.info("low"), info["low"]
-    end
-  end
-
-  describe 'info_all' do
-    it 'returns a hash with details for each queue' do
-      @coordinator.add_task("high", "new task")
-      info = @coordinator.info("high")
-      assert_equal "high", info["name"]
-      assert_equal nil, info["full"]
-      assert_equal nil, info["capacity"]
-      assert_equal 1, info["count"]
-      assert_equal ["new task"], info["items"]
     end
   end
 
