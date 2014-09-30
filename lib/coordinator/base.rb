@@ -36,6 +36,13 @@ module Coordinator
       queue_for_skill(skill).details
     end
 
+    def info_all
+      @queues.inject({}) do |hash, queue|
+        hash[queue.skill] = info(queue.skill)
+        hash
+      end
+    end
+
     def position(skill, task)
       index = queue_for_skill(skill).items.index(task)
       index ? index + 1 : -1

@@ -66,6 +66,20 @@ describe 'Coordinator::Base' do
     end
   end
 
+  describe 'info_all' do
+    it 'returns a hash with details for each queue' do
+      @coordinator.add_task("high", "high task")
+      @coordinator.add_task("medium", "medium task 1")
+      @coordinator.add_task("medium", "medium task 2")
+      @coordinator.add_task("low", "medium task 2")
+      info = @coordinator.info_all
+
+      assert_equal @coordinator.info("high"), info["high"]
+      assert_equal @coordinator.info("medium"), info["medium"]
+      assert_equal @coordinator.info("low"), info["low"]
+    end
+  end
+
   describe 'length_all' do
     it 'returns the total amount of tasks across all queues' do
       @coordinator.add_task("medium", 1)
