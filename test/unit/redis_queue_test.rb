@@ -13,6 +13,17 @@ describe 'Coordinator::RedisQueue' do
       assert_equal 2, @queue.length
     end
 
+    it 'adds same hash to queue only once' do
+      el = {
+        'id' => 10,
+        'subject' => 'testing'
+      }
+
+      @queue.push(el)
+      @queue.push(el)
+      assert_equal 1, @queue.length
+    end
+
     it 'adds the same item only once' do
       @queue.push("a")
       @queue.push("a")
