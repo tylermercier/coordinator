@@ -12,12 +12,12 @@ module Coordinator
     def push(item)
       return false if full?
       data = serialize(item)
-      @redis.rpush(@queue_name, data) unless items.include?(data)
+      @redis.rpush(@queue_name, data) unless serialized_items.include?(data)
     end
 
     def left_push(item)
       data = serialize(item)
-      @redis.lpush(@queue_name, data) unless items.include?(data)
+      @redis.lpush(@queue_name, data) unless serialized_items.include?(data)
     end
 
     def pop
@@ -49,7 +49,7 @@ module Coordinator
     end
 
     def items
-      @redis.lrange(@queue_name, 0, length).map { |i| deserialize(i) }
+      serialized_items.map { |i| deserialize(i) }
     end
 
     def full?
@@ -57,6 +57,10 @@ module Coordinator
     end
 
     private
+
+    def serialized_items
+      @redis.lrange(@queue_name, 0, length)
+    end
 
     def serialize(item)
       item.is_a?(String) ? item : item.to_json
